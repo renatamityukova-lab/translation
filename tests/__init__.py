@@ -1,0 +1,1 @@
+"""Тесты сервиса Transtalion (pytest)."""

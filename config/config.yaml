@@ -1,0 +1,45 @@
+# Конфигурация сервиса Transtalion.
+# Секреты (API-ключи) в файл не записываются — только имена переменных окружения.
+
+app:
+  name: transtalion
+  host: 0.0.0.0
+  port: 8000
+
+llm:
+  provider: openai                 # OpenAI-совместимый API
+  model: gpt-oss-120b              # основная модель корпоративного шлюза
+  fallback_model: MiniMax-M2.7     # резервная модель при недоступности основной
+  api_key_env: OPENAI_API_KEY
+  base_url: https://llm.enplus.group/v1
+  fallback_base_url: null          # отдельный шлюз для резервной модели (null — тот же)
+  trust_env: true                  # false — игнорировать HTTP(S)_PROXY из окружения
+  temperature: 0
+  timeout_seconds: 60
+  max_retries: 2
+
+logging:
+  enabled: true
+  level: INFO                      # DEBUG | INFO | WARNING | ERROR | CRITICAL
+  console: true                    # вывод в консоль
+  file: true                       # вывод в файл
+  file_path: logs/transtalion.log  # относительный путь — от каталога translation/
+  max_bytes: 5000000               # ротация файла после 5 МБ
+  backup_count: 5                  # хранить 5 архивных файлов
+  format: "%(asctime)s | %(levelname)-8s | %(request_id)s | %(name)s | %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+
+cache:
+  enabled: true
+  backend: memory           # memory (реализован) | file | redis (пока не реализованы)
+  ttl_seconds: 86400        # время жизни записи, секунды
+  max_size: 10000           # максимум записей (вытесняется ближайшая к истечению)
+  path: .cache/translations.json   # используется при backend: file
+  redis_url: redis://localhost:6379/0  # используется при backend: redis
+
+translation:
+  source_lang: ru
+  target_lang: en
+  output_case: snake_case
+  singular: true
+  drop_prepositions: true

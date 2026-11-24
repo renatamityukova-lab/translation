@@ -1,0 +1,19 @@
+# Виртуальное окружение
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Секреты и локальные настройки
+.env
+
+# Кеш и служебные файлы
+.cache/
+.pytest_cache/
+
+# Логи
+logs/
+*.log
